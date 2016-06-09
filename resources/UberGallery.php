@@ -62,6 +62,7 @@ class UberGallery {
             $config = parse_ini_file($configPath, true);
 
             // Apply configuration
+            $this->setTitle($config['basic_settings']['title']);
             $this->setCacheExpiration($config['basic_settings']['cache_expiration']);
             $this->setPaginatorThreshold($config['basic_settings']['paginator_threshold']);
             $this->setThumbSize($config['basic_settings']['thumbnail_width'], $config['basic_settings']['thumbnail_height']);
@@ -244,6 +245,18 @@ class UberGallery {
         // Return the output
         return $output;
 
+    }
+
+
+    /**
+     * Returns the title of the website
+     *
+     * @return string Title as set in user config
+     * @access public
+     */
+    public function getTitle() {
+        // Return the title
+        return $this->_config['title'];
     }
 
 
@@ -472,6 +485,20 @@ class UberGallery {
      */
     public function setPaginatorThreshold($threshold = 10) {
         $this->_config['threshold'] = $threshold;
+
+        return $this;
+    }
+
+
+    /**
+     * Set the title of the website
+     *
+     * @param int $title Title of the website (default = UberGallery)
+     * @return object Self
+     * @access public
+     */
+    public function setTitle($title = 'UberGallery') {
+        $this->_config['title'] = $title;
 
         return $this;
     }
