@@ -52,6 +52,14 @@ class UberGallery {
 
         // Set application directory
         $this->_appDir = __DIR__;
+        
+        if (isset($_GET['d'])) {
+            $fullpath = dirname($this->_appDir) . '/' . $_GET['d'];
+            if (file_exists($fullpath)) {
+                $this->downloadImage($fullpath);
+                exit();
+            }
+        }
 
         // Set configuration file path
         $configPath = $this->_appDir . '/galleryConfig.ini';
@@ -556,6 +564,19 @@ class UberGallery {
         );
 
         return true;
+    }
+    
+    /**
+     * Return an image as download
+     * @param string $fullpath the full path to the image file
+     * @access public
+     */
+    public function downloadImage($fullpath) {
+        $filename = preg_replace('/^.*\//', '', $fullpath);
+        header("Content-Disposition: attachment; filename=\"".$filename."\"");
+        header("Content-type: application/octet-stream");
+        header("Content-length: " . filesize($fullpath));
+        readfile($fullpath);
     }
 
     /**
