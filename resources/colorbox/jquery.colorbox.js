@@ -457,6 +457,12 @@
 				visibility: 'visible'
 			}).show();
 
+			// Set titles of control buttons to display while hovering
+			$prev.attr({title:settings.get('previous')});
+			$next.attr({title:settings.get('next')});
+			$download.attr({title:settings.get('download')});
+			$close.attr({title:settings.get('close')});
+
 			if (settings.get('closeButton')) {
 				$close.html(settings.get('close')).appendTo($content);
 			} else {
