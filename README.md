@@ -1,3 +1,15 @@
+Features of this fork
+----------
+This fork adds the following feature branches on top of [UberGallery](https://github.com/UberGallery/UberGallery).
+
+  * Update from [Colorbox](https://github.com/jackmoore/colorbox) 1.6.1 to 1.6.4
+  * Download button in Theme 1 of [Colorbox](https://github.com/jackmoore/colorbox)
+  * Merge of themes uber-responsive and uber-blue
+  * Configurable gallery title 
+
+Official doc:
+----------
+
 UberGallery - The simple PHP photo gallery
 ==========================================
 Created by, [Chris Kankiewicz](http://www.ChrisKankiewicz.com)
