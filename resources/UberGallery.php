@@ -52,14 +52,6 @@ class UberGallery {
 
         // Set application directory
         $this->_appDir = __DIR__;
-        
-        if (isset($_GET['d'])) {
-            $fullpath = dirname($this->_appDir) . '/' . $_GET['d'];
-            if (file_exists($fullpath)) {
-                $this->downloadImage($fullpath);
-                exit();
-            }
-        }
 
         // Set configuration file path
         $configPath = $this->_appDir . '/galleryConfig.ini';
@@ -134,6 +126,23 @@ class UberGallery {
 
         }
 
+        // Check if user wants do download an image
+        if (isset($_GET['d'])) {
+            $fullpath = dirname($this->_appDir) . '/' . $_GET['d'];
+            if (file_exists($fullpath)) {
+                $this->downloadImage($fullpath);
+                exit();
+            }
+        } else
+        // Check if user wants do download all images
+        if (isset($_GET['z'])) {
+            $fullpath = $this->_config['cache_dir'] . '/' . $this->getTitle() . '.zip';
+            if ($this->downloadZip($fullpath)) {
+                // Do not continue processing after successful download
+                exit();
+            }
+            // Deliver website instead
+        }
     }
 
 
@@ -565,15 +574,57 @@ class UberGallery {
 
         return true;
     }
-    
+
+    /**
+     * Return all images as zip file to download
+     * Does not use the cache
+     * @param string $fullpath the full path to the destination zip file
+     * @return download did start successfully
+     * @access public
+     */
+    public function downloadZip($fullpath) {
+        // Check if file is already in cache or expired
+        if (!$this->_isFileCached($fullpath)) {
+
+            // Try to create the zip file
+            $zip = new ZipArchive();
+
+            // Check for previous and new errors
+            if ($this->getSystemMessages() || $zip->open($fullpath, ZIPARCHIVE::CREATE | ZIPARCHIVE::OVERWRITE) !== TRUE) {
+                return false; // abort here
+            } else {
+                // No error occured on creation or overwriting
+                $galleryArray = $this->_readDirectory('gallery-images', false);
+                
+                foreach($galleryArray as $name => $image) {
+                    $zip->addFile($image['real_path'], $name);
+                }
+                
+                $zip->close();
+            }
+        }
+        
+        // File is either in cache or created by now
+        // Prepare response for download
+        header("Pragma: public", true);
+        header("Expires: 0", true);
+        header("Cache-Control: no-cache", true);
+        header("Content-Description: File Transfer", true);
+        header("Content-type: application/zip", true);
+        header("Content-Disposition: attachment; filename=\"" . basename($fullpath) . "\"", true);
+        header("Content-Transfer-Encoding: Binary", true);
+        header("Content-Length: " . filesize($fullpath), true);
+        readfile($fullpath);
+        return true;
+    }
+
     /**
      * Return an image as download
      * @param string $fullpath the full path to the image file
      * @access public
      */
     public function downloadImage($fullpath) {
-        $filename = preg_replace('/^.*\//', '', $fullpath);
-        header("Content-Disposition: attachment; filename=\"".$filename."\"");
+        header("Content-Disposition: attachment; filename=\"" . basename($fullpath) . "\"");
         header("Content-type: application/octet-stream");
         header("Content-length: " . filesize($fullpath));
         readfile($fullpath);
