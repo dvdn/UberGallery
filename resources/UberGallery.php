@@ -141,7 +141,7 @@ class UberGallery {
             set_time_limit(180);
             $downloadSuccessful = $this->downloadZip($fullpath);
             set_time_limit(30);
-            if (downloadSuccessful) {
+            if ($downloadSuccessful) {
                 // Do not continue processing after successful download
                 exit();
             }
