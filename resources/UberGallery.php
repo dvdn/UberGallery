@@ -137,7 +137,11 @@ class UberGallery {
         // Check if user wants do download all images
         if (isset($_GET['z'])) {
             $fullpath = $this->_config['cache_dir'] . '/' . $this->getTitle() . '.zip';
-            if ($this->downloadZip($fullpath)) {
+            // Script possibly needs much time
+            set_time_limit(180);
+            $downloadSuccessful = $this->downloadZip($fullpath);
+            set_time_limit(30);
+            if (downloadSuccessful) {
                 // Do not continue processing after successful download
                 exit();
             }
