@@ -1123,5 +1123,3 @@
 	publicMethod.settings = defaults;
 
 }(jQuery, document, window));
-
->>>>>>> download-image
