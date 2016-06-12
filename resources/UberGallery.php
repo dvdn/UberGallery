@@ -54,11 +54,13 @@ class UberGallery {
         $this->_appDir = __DIR__;
         
         if (isset($_GET['d'])) {
-            $fullpath = dirname($this->_appDir) . '/' . $_GET['d'];
-            if (file_exists($fullpath)) {
+            // Sanitize and validate input
+            if (dirname(realpath($fullpath)) === dirname($this->_appDir) . '/gallery-images'
+		    && file_exists($fullpath)) {
                 $this->downloadImage($fullpath);
                 exit();
             }
+	    // Deliver website instead
         }
 
         // Set configuration file path
