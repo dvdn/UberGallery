@@ -129,10 +129,13 @@ class UberGallery {
         // Check if user wants do download an image
         if (isset($_GET['d'])) {
             $fullpath = dirname($this->_appDir) . '/' . $_GET['d'];
-            if (file_exists($fullpath)) {
+            // Sanitize and validate input
+            if (dirname(realpath($fullpath)) === dirname($this->_appDir) . '/gallery-images'
+                    && file_exists($fullpath)) {
                 $this->downloadImage($fullpath);
                 exit();
             }
+            // Deliver website instead
         } else
         // Check if user wants do download all images
         if (isset($_GET['z'])) {
