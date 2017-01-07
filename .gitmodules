@@ -16,3 +16,6 @@
 [submodule "resources/themes/uber-responsive-blue"]
 	path = resources/themes/uber-responsive-blue
 	url = https://github.com/sberlin/uber-responsive-blue
+[submodule "resources/exif-js"]
+	path = resources/exif-js
+	url = https://github.com/exif-js/exif-js.git

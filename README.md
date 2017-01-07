@@ -2,7 +2,8 @@ Features of this fork
 ----------
 This fork adds the following feature branches on top of [UberGallery](https://github.com/UberGallery/UberGallery).
 
-  * Update from [Colorbox](https://github.com/jackmoore/colorbox) 1.6.1 to 1.6.4
+  * Update from [Colorbox](https://github.com/jackmoore/colorbox) to latest stable release 1.6.4
+  * Handling images [EXIF orientation](https://en.wikipedia.org/wiki/Exif)
   * Download button in Theme 1 of [Colorbox](https://github.com/jackmoore/colorbox)
   * Merge of themes [uber-responsive](https://github.com/UberGallery/uber-responsive) and [uber-blue](https://github.com/UberGallery/uber-blue) to [uber-responsive-blue](https://github.com/sberlin/uber-responsive-blue)
   * Configurable gallery title

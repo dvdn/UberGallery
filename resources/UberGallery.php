@@ -19,7 +19,7 @@
 class UberGallery {
 
     // Define application version
-    const VERSION = '2.4.8';
+    const VERSION = '2.4.9';
 
     // Reserve some variables
     protected $_config     = array();
@@ -364,9 +364,10 @@ class UberGallery {
         // Set some path variables
         $templatePath = $this->_appDir . '/templates/colorboxScripts.php';
         $colorboxPath = $this->_getRelativePath(getcwd(), $this->_appDir) . '/colorbox/jquery.colorbox.js';
+        $exifPath = $this->_getRelativePath(getcwd(), $this->_appDir) . '/exif-js/exif.js';
 
         // Get the template contents
-        $template = $this->readTemplate($templatePath, array('path' => $colorboxPath));
+        $template = $this->readTemplate($templatePath, array('path' => $colorboxPath, 'exifpath' => $exifPath));
 
         // Return the include text
         return $template;
@@ -765,6 +766,12 @@ class UberGallery {
 
         // Get needed image information
         $imgInfo = getimagesize($source);
+	// add orientation info
+        $imgInfo['orientation'] = 1;
+        $exif = exif_read_data($source);
+        if (!empty($exif['Orientation'])) {
+            $imgInfo['orientation'] = $exif['Orientation'];
+        }
         $width   = $imgInfo[0];
         $height  = $imgInfo[1];
         $x       = 0;
@@ -773,8 +780,13 @@ class UberGallery {
         // Calculate ratios
         $srcRatio   = $width / $height;
         $thumbRatio = $thumbWidth / $thumbHeight;
+        // Specific rule for clockwise or anticlockwise orientation
+        $needsRotation = false;
+         if ($imgInfo['orientation'] == 6 or $imgInfo['orientation'] == 8){
+             $needsRotation = true;
+        }
 
-        if ($srcRatio > $thumbRatio) {
+        if ($srcRatio > $thumbRatio and $needsRotation == false) {
 
             // Preserver original width
             $originalWidth = $width;
@@ -785,7 +797,7 @@ class UberGallery {
             // Set thumbnail x offset
             $x = ceil(($originalWidth - $width) / 2);
 
-        } elseif ($srcRatio < $thumbRatio) {
+        } elseif ($srcRatio < $thumbRatio and $needsRotation == false) {
 
             // Preserver original height
             $originalHeight = $height;
@@ -796,6 +808,9 @@ class UberGallery {
             // Set thumbnail y offset
             $y = ceil(($originalHeight - $height) / 2);
 
+        } elseif ($needsRotation = true)  {
+            $x = ceil(($height - $width) / 2);
+            $y = ceil(($width - $height) / 2);
         }
 
         // Create new empty image of proper dimensions
@@ -803,15 +818,15 @@ class UberGallery {
 
         // Create new thumbnail
         if ($imgInfo[2] == IMAGETYPE_JPEG) {
-            $image = imagecreatefromjpeg($source);
+            $image = $this->image_fix_orientation($source, $imgInfo);
             imagecopyresampled($newImage, $image, 0, 0, $x, $y, $thumbWidth, $thumbHeight, $width, $height);
             imagejpeg($newImage, $destination, $quality);
         } elseif ($imgInfo[2] == IMAGETYPE_GIF) {
-            $image = imagecreatefromgif($source);
+            $image = $this->image_fix_orientation($source, $imgInfo);
             imagecopyresampled($newImage, $image, 0, 0, $x, $y, $thumbWidth, $thumbHeight, $width, $height);
             imagegif($newImage, $destination);
         } elseif ($imgInfo[2] == IMAGETYPE_PNG) {
-            $image = imagecreatefrompng($source);
+            $image = $this->image_fix_orientation($source, $imgInfo);
             imagecopyresampled($newImage, $image, 0, 0, $x, $y, $thumbWidth, $thumbHeight, $width, $height);
             imagepng($newImage, $destination);
         }
@@ -819,6 +834,28 @@ class UberGallery {
         // Return relative path to thumbnail
         $relativePath = $this->_rThumbsDir . '/' . $fileName;
         return $relativePath;
+    }
+
+    /**
+     * Manage image orientation
+     *
+     * @param $source Image
+     * @imgInfo  Array  image infos
+     * @return Image possibly rotated
+     */
+    private function image_fix_orientation($source, $imgInfo)
+    {
+             switch ($imgInfo[2]) {
+                case IMAGETYPE_JPEG: $image = imagecreatefromjpeg($source); break;
+                case IMAGETYPE_GIF: $image = imagecreatefromgif($source); break;
+                case IMAGETYPE_PNG: $image = imagecreatefrompng($source); break;
+             }
+            switch ($imgInfo['orientation']) {
+                case 3: $image = imagerotate($image, 180, 0); break;
+                case 6: $image = imagerotate($image, -90, 0); break;
+                case 8: $image = imagerotate($image, 90, 0); break;
+            }
+        return $image;
     }
 
     /**

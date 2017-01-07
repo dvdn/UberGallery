@@ -1,3 +1,4 @@
+<script type="text/javascript" src="<?php echo $exifpath; ?>"></script>
 <script type="text/javascript" src="<?php echo $path; ?>"></script>
 
 <script type="text/javascript">

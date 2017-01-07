@@ -1006,44 +1006,74 @@
 				// A small pause because some browsers will occassionaly report a
 				// img.width and img.height of zero immediately after the img.onload fires
 				setTimeout(function(){
-					var percent;
+                    // Specific rule for orientation management
+                    EXIF.getData(photo, function() {
+                        orientation = EXIF.getTag(this, "Orientation");
 
-					if (settings.get('retinaImage') && window.devicePixelRatio > 1) {
-						photo.height = photo.height / window.devicePixelRatio;
-						photo.width = photo.width / window.devicePixelRatio;
-					}
+                        var percent;
 
-					if (settings.get('scalePhotos')) {
-						setResize = function () {
-							photo.height -= photo.height * percent;
-							photo.width -= photo.width * percent;
-						};
-						if (settings.mw && photo.width > settings.mw) {
-							percent = (photo.width - settings.mw) / photo.width;
-							setResize();
-						}
-						if (settings.mh && photo.height > settings.mh) {
-							percent = (photo.height - settings.mh) / photo.height;
-							setResize();
-						}
-					}
+                        if (settings.get('retinaImage') && window.devicePixelRatio > 1) {
+                            photo.height = photo.height / window.devicePixelRatio;
+                            photo.width = photo.width / window.devicePixelRatio;
+                        }
 
-					if (settings.h) {
-						photo.style.marginTop = Math.max(settings.mh - photo.height, 0) / 2 + 'px';
-					}
+                        if (settings.get('scalePhotos')) {
+                            setResize = function () {
+                                photo.height -= photo.height * percent;
+                                photo.width -= photo.width * percent;
+                            };
+                            if (settings.mw && photo.width > settings.mw) {
+                                percent = (photo.width - settings.mw) / photo.width;
+                                setResize();
+                            }
+                            if (settings.mh && photo.height > settings.mh) {
+                                percent = (photo.height - settings.mh) / photo.height;
+                                setResize();
+                            }
+                        }
 
-					if ($related[1] && (settings.get('loop') || $related[index + 1])) {
-						photo.style.cursor = 'pointer';
+                        if (settings.h) {
+                            photo.style.marginTop = Math.max(settings.mh - photo.height, 0) / 2 + 'px';
+                        }
 
-						$(photo).bind('click.'+prefix, function () {
-							publicMethod.next();
-						});
-					}
+                        if ($related[1] && (settings.get('loop') || $related[index + 1])) {
+                            photo.style.cursor = 'pointer';
 
-					photo.style.width = photo.width + 'px';
-					photo.style.height = photo.height + 'px';
-					prep(photo);
-				}, 1);
+                            $(photo).bind('click.'+prefix, function () {
+                                publicMethod.next();
+                            });
+                        }
+                        // CSS rotation if needed
+                        if ( orientation == 3) {
+                           $(photo).css({
+                                'transform': 'rotate(180deg)',
+                                '-ms-transform': 'rotate(180deg)', /* IE 9 */
+                                '-webkit-transform': 'rotate(180deg)', /* Safari and Chrome */
+                                '-o-transform': 'rotate(180deg)', /* Opera */
+                                '-moz-transform': 'rotate(180deg)', /* Firefox */
+                            });
+                        } else if ( orientation == 6) {
+                           $(photo).css({
+                                'transform': 'rotate(90deg)',
+                                '-ms-transform': 'rotate(90deg)', /* IE 9 */
+                                '-webkit-transform': 'rotate(90deg)', /* Safari and Chrome */
+                                '-o-transform': 'rotate(90deg)', /* Opera */
+                                '-moz-transform': 'rotate(90deg)', /* Firefox */
+                            });
+                        } else if (orientation == 8) {
+                            $(photo).css({
+                                'transform': 'rotate(270deg)',
+                                '-ms-transform': 'rotate(270deg)', /* IE 9 */
+                                '-webkit-transform': 'rotate(270deg)', /* Safari and Chrome */
+                                '-o-transform': 'rotate(270deg)', /* Opera */
+                                '-moz-transform': 'rotate(270deg)', /* Firefox */
+                            });
+                        }
+                        photo.style.width = photo.width + 'px';
+                        photo.style.height = photo.height + 'px';
+                        prep(photo);
+                    });
+                }, 1);
 			});
 
 			photo.src = href;
