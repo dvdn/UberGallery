@@ -53,9 +53,9 @@ to your liking.
 
   4. Make the `resources/cache/` directory writable by the web server:
 
-    ```
+
     chmod 777 /path/to/resources/cache
-    ```
+
 
   5. Open your web browser and load the page where you installed UberGallery.
 
@@ -70,43 +70,43 @@ to your liking.
   3. Insert the following code into the PHP page where you would like the gallery to be displayed
 (be sure to change the include and image folder path to match your configuration):
 
-    ```php
+
     <?php include_once('path/to/resources/UberGallery.php'); $gallery = UberGallery::init()->createGallery('path/to/images-folder'); ?>
-    ```
+
 
   4. Include the UberGallery and desired ColorBox style sheet in your page header:
 
-    ```html
+
     <link rel="stylesheet" type="text/css" href="path/to/resources/UberGallery.css" />
     <link rel="stylesheet" type="text/css" href="path/to/resources/colorbox/1/colorbox.css" />
-    ```
+
 
     **NOTE:** You can replace the `1` with a value between 1 and 5 for different ColorBox themes.
 
   5. Include the jQuery and ColorBox javascript files in your page header:
 
-    ```html
+
     <script type="text/javascript" src="://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
     <script type="text/javascript" src="path/to/resources/colorbox/jquery.colorbox.js"></script>
-    ```
+
 
   6. Include the ColorBox jquery call in your header:
 
-    ```html
+
     <script type="text/javascript">
     $(document).ready(function(){
         $("a[rel='colorbox']").colorbox({maxWidth: "90%", maxHeight: "90%", opacity: ".5"});
     });
     </script>
-    ```
+
 
   7. Upload images to your images directory.
 
   8. Make the `resources/cache/` directory writable by the web server.
 
-    ```
+
     chmod 777 /path/to/resources/cache
-    ```
+
 
   9. Open your web browser and load the page where you installed UberGallery.
 
@@ -115,24 +115,24 @@ Install with Git
 ----------------
   1. SSH into the your server and clone the UberGallery repository and submodules:
 
-    ```
+
     git clone --recursive git://github.com/UberGallery/UberGallery.git /path/to/ubergallery
-    ```
+
 
   2. Copy `resources/sample.galleryConfig.ini` to `resources/galleryConfig.ini` and modify the settings
 
-    ```
+
     cp resources/sample.galleryConfig.ini resources/galleryConfig.ini
     nano resources/galleryConfig.ini
-    ```
+
 
   3. Upload images to the `gallery-images/` folder within your gallery directory.
 
   4. Make the `resources/cache/` directory writable by the web server.
 
-    ```
+
     chmod 777 /path/to/resources/cache
-    ```
+
 
   5. Open your web browser and load the page where you installed UberGallery.
 
@@ -156,26 +156,26 @@ If you're having issues with UberGallery here are a few troubleshooting tips:
 
   * Verify that you have PHP 5.2 or later installed.  You can verify your PHP version by running:
 
-    ```
+
     php --version
-    ```
+
 
   * Make sure you have the latest version of UberGallery installed.  You can always find the latest
     version at <http://www.ubergallery.net/#download>
 
   * Replace your `galleryConfig.ini` with `sample.galleryConfig.ini` to ensure proper configuration:
 
-    ```
+
     rm resources/galleryConfig.ini
     cp resource/sample.galleryConfig.ini resources/galleryConfig.ini
-    ```
+
 
   * Clear your cache and make sure the directory is writable by the web server:
 
-    ```
+
     rm -f resources/cache/*
     chmod 777 resources/cache
-    ```
+
 
   * Enable debugging by setting the `enable_debugging` option in `resources/galleryConfig.ini` to
     `true`, try loading your gallery in a web browser then inspect the debug.log file in your cache
