@@ -1,6 +1,3 @@
-[submodule "resources/themes/uber-blue"]
-    path = resources/themes/uber-blue
-    url = git://github.com/UberGallery/uber-blue.git
 [submodule "resources/themes/uber-orange"]
     path = resources/themes/uber-orange
     url = git://github.com/UberGallery/uber-orange.git
@@ -17,5 +14,5 @@
     path = resources/themes/uber-responsive-blue
     url = git://github.com/sberlin/uber-responsive-blue.git
 [submodule "resources/exif-js"]
-	path = resources/exif-js
-	url = git://github.com/exif-js/exif-js.git
+    path = resources/exif-js
+    url = git://github.com/exif-js/exif-js.git
