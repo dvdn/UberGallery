@@ -156,26 +156,26 @@ If you're having issues with UberGallery here are a few troubleshooting tips:
 
   * Verify that you have PHP 5.2 or later installed.  You can verify your PHP version by running:
 
-
+    ```
     php --version
-
+    ```
 
   * Make sure you have the latest version of UberGallery installed.  You can always find the latest
     version at <http://www.ubergallery.net/#download>
 
   * Replace your `galleryConfig.ini` with `sample.galleryConfig.ini` to ensure proper configuration:
 
-
+    ```
     rm resources/galleryConfig.ini
     cp resource/sample.galleryConfig.ini resources/galleryConfig.ini
-
+    ```
 
   * Clear your cache and make sure the directory is writable by the web server:
 
-
+    ```
     rm -f resources/cache/*
     chmod 777 resources/cache
-
+    ```
 
   * Enable debugging by setting the `enable_debugging` option in `resources/galleryConfig.ini` to
     `true`, try loading your gallery in a web browser then inspect the debug.log file in your cache
