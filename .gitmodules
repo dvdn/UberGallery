@@ -1,21 +1,21 @@
 [submodule "resources/themes/uber-blue"]
-	path = resources/themes/uber-blue
-	url = git://github.com/UberGallery/uber-blue.git
+    path = resources/themes/uber-blue
+    url = git://github.com/UberGallery/uber-blue.git
 [submodule "resources/themes/uber-orange"]
-	path = resources/themes/uber-orange
-	url = git://github.com/UberGallery/uber-orange.git
+    path = resources/themes/uber-orange
+    url = git://github.com/UberGallery/uber-orange.git
 [submodule "resources/themes/uber-naked"]
-	path = resources/themes/uber-naked
-	url = git://github.com/UberGallery/uber-naked.git
+    path = resources/themes/uber-naked
+    url = git://github.com/UberGallery/uber-naked.git
 [submodule "resources/themes/uber-responsive"]
     path = resources/themes/uber-responsive
     url = git://github.com/UberGallery/uber-responsive.git
 [submodule "scripts"]
-	path = scripts
-	url = git://github.com/UberGallery/scripts.git
+    path = scripts
+    url = git://github.com/UberGallery/scripts.git
 [submodule "resources/themes/uber-responsive-blue"]
-	path = resources/themes/uber-responsive-blue
-	url = https://github.com/sberlin/uber-responsive-blue
+    path = resources/themes/uber-responsive-blue
+    url = git://github.com/sberlin/uber-responsive-blue.git
 [submodule "resources/exif-js"]
 	path = resources/exif-js
-	url = https://github.com/exif-js/exif-js.git
+	url = git://github.com/exif-js/exif-js.git
